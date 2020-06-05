@@ -2,17 +2,13 @@ package com.example.study.service;
 
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.Item;
-import com.example.study.model.entity.User;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.request.ItemApiRequest;
 import com.example.study.model.network.response.ItemApiResponse;
-import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.repository.ItemRepository;
 import com.example.study.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
@@ -83,6 +79,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
     private Header<ItemApiResponse> response(Item item) {
         // user -> userApiResponse
         ItemApiResponse body = ItemApiResponse.builder()
+                .id(item.getId())
                 .status(item.getStatus())
                 .name(item.getName())
                 .title(item.getTitle())
