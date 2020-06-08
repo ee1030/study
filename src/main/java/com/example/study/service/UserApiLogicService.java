@@ -48,7 +48,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
     public Header<UserApiResponse> read(Long id) {
 
         return userRepository.findById(id)
-                .map(user -> response(user))
+                .map(this::response)
                 .orElseGet(
                         ()->Header.ERROR("데이터 없음")
                 );
@@ -74,7 +74,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
             return user;
         })
         .map(user -> userRepository.save(user))
-        .map(updateUser -> response(updateUser))           // 4. userApiResponse
+        .map(this::response)           // 4. userApiResponse
         .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
