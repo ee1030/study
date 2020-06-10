@@ -1,6 +1,7 @@
 package com.example.study.model.entity;
 
 import com.example.study.model.enumclass.OrderDetailStatus;
+import com.example.study.model.enumclass.OrderGroupStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -28,7 +29,7 @@ public class OrderDetail {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private OrderDetailStatus status;
+    private OrderGroupStatus status;
 
     private LocalDateTime arrivalDate;
 

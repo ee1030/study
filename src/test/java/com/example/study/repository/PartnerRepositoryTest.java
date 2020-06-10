@@ -32,7 +32,6 @@ class PartnerRepositoryTest extends StudyApplicationTests {
 
         Partner partner = new Partner();
         partner.setName(name);
-        partner.setStatus(status);
         partner.setAddress(address);
         partner.setCallCenter(callCenter);
         partner.setPartnerNumber(partnerNumber);

@@ -21,7 +21,6 @@ class ItemRepositoryTest extends StudyApplicationTests {
     public void create() {
         Item item = new Item();
 
-        item.setStatus("UNREGISTERED");
         item.setName("삼성 노트북");
         item.setTitle("삼성 노트북 A100");
         item.setContent("2020년형 노트북 입니다.");

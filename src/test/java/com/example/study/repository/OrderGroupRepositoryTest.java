@@ -18,11 +18,9 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
     @Test
     public void create() {
         OrderGroup orderGroup = new OrderGroup();
-        orderGroup.setStatus("Complete");
-        orderGroup.setOrderType("ALL");
+
         orderGroup.setRevAddress("서울시 강남구");
         orderGroup.setRevName("홍길동");
-        orderGroup.setPaymentType("CARD");
         orderGroup.setTotalPrice(BigDecimal.valueOf(900000));
         orderGroup.setTotalQuantity(1);
         orderGroup.setOrderAt(LocalDateTime.now().minusDays(2));
