@@ -4,7 +4,12 @@ import com.example.study.model.entity.Category;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.request.CategoryApiRequest;
 import com.example.study.model.network.response.CategoryApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryApiLogicService extends BaseService<CategoryApiRequest, CategoryApiResponse, Category> {
@@ -18,13 +23,14 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
                 .title(body.getTitle())
                 .build();
         Category newCategory = baseRepository.save(category);
-        return response(newCategory);
+        return Header.OK(response(newCategory));
     }
 
     @Override
     public Header<CategoryApiResponse> read(Long id) {
         return baseRepository.findById(id)
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -40,6 +46,7 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
                 })
                 .map(updateCategory -> baseRepository.save(updateCategory))
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -53,12 +60,13 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<CategoryApiResponse> response(Category category) {
+
+    private CategoryApiResponse response(Category category) {
         CategoryApiResponse body = CategoryApiResponse.builder()
                 .id(category.getId())
                 .type(category.getType())
                 .title(category.getTitle())
                 .build();
-        return Header.OK(body);
+        return body;
     }
 }

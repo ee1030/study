@@ -4,7 +4,12 @@ import com.example.study.model.entity.AdminUser;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.request.AdminUserApiRequest;
 import com.example.study.model.network.response.AdminUserApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminUserApiLogicService extends BaseService<AdminUserApiRequest, AdminUserApiResponse, AdminUser> {
@@ -25,13 +30,14 @@ public class AdminUserApiLogicService extends BaseService<AdminUserApiRequest, A
                 .build();
 
         AdminUser newAdminUser = baseRepository.save(adminUser);
-        return response(newAdminUser);
+        return Header.OK(response(newAdminUser));
     }
 
     @Override
     public Header<AdminUserApiResponse> read(Long id) {
         return baseRepository.findById(id)
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -54,6 +60,7 @@ public class AdminUserApiLogicService extends BaseService<AdminUserApiRequest, A
                 })
                 .map(updatedAdminUser -> baseRepository.save(updatedAdminUser))
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -67,7 +74,7 @@ public class AdminUserApiLogicService extends BaseService<AdminUserApiRequest, A
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<AdminUserApiResponse> response(AdminUser adminUser) {
+    private AdminUserApiResponse response(AdminUser adminUser) {
         AdminUserApiResponse body = AdminUserApiResponse.builder()
                 .id(adminUser.getId())
                 .account(adminUser.getAccount())
@@ -81,6 +88,6 @@ public class AdminUserApiLogicService extends BaseService<AdminUserApiRequest, A
                 .unregisteredAt(adminUser.getUnregisteredAt())
                 .build();
 
-        return Header.OK(body);
+        return body;
     }
 }

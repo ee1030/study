@@ -6,7 +6,12 @@ import com.example.study.model.network.request.OrderGroupApiRequest;
 import com.example.study.model.network.response.OrderGroupApiResponse;
 import com.example.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest, OrderGroupApiResponse, OrderGroup> {
@@ -31,13 +36,14 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                                     .user(userRepository.getOne(body.getUserId()))
                                     .build();
         OrderGroup newOrderGroup = baseRepository.save(orderGroup);
-        return response(newOrderGroup);
+        return Header.OK(response(newOrderGroup));
     }
 
     @Override
     public Header<OrderGroupApiResponse> read(Long id) {
         return baseRepository.findById(id)
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -61,6 +67,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 })
                 .map(updatedOrderGroup -> baseRepository.save(updatedOrderGroup))
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -74,7 +81,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<OrderGroupApiResponse> response(OrderGroup orderGroup) {
+    public OrderGroupApiResponse response(OrderGroup orderGroup) {
         OrderGroupApiResponse body = OrderGroupApiResponse.builder()
                     .id(orderGroup.getId())
                     .status(orderGroup.getStatus())
@@ -88,6 +95,6 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                     .arrivalDate(orderGroup.getArrivalDate())
                     .userId(orderGroup.getUser().getId())
                     .build();
-        return Header.OK(body);
+        return body;
     }
 }
